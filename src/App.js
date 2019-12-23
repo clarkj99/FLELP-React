@@ -1,11 +1,11 @@
 import React from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import 'semantic-ui-css/semantic.min.css'
-import { Container, Menu, Header } from 'semantic-ui-react'
+import { Container } from 'semantic-ui-react'
 import Login from './components/Login';
 import Signup from './components/Signup';
-import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
 
 class App extends React.Component {
   initialUser = {
@@ -47,7 +47,7 @@ class App extends React.Component {
       .then(this.handleErrors)
       .then(res => res.json())
       .then(data => {
-        this.setState({ token: data.jwt })
+        this.setState({ token: data.jwt, user: data.user, error: null })
       })
   }
 
@@ -65,7 +65,7 @@ class App extends React.Component {
       .then(this.handleErrors)
       .then(res => res.json())
       .then(data => {
-        this.setState({ token: data.jwt, user: data.user })
+        this.setState({ token: data.jwt, user: data.user, error: null })
       })
       .catch(error => {
         console.error(error);
@@ -77,15 +77,8 @@ class App extends React.Component {
 
     return (
       <Router>
+        <Navbar />
         <Container>
-          <Menu>
-            <NavLink className='item' to='/login'>
-              Login
-            </NavLink>
-            <NavLink className='item' to='/signup'>
-              Signup
-            </NavLink>
-          </Menu>
           <Switch>
             <Route path='/login'>
               <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} />
