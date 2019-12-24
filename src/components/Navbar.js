@@ -6,7 +6,7 @@ const Navbar = (props) => {
     return (
         <Menu>
             <NavLink exact className='item' to='/' >
-                Home
+                FLELP
             </NavLink>
             <NavLink className='item' to='/login' >
                 Login
