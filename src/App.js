@@ -15,7 +15,6 @@ class App extends React.Component {
     display_name: ''
   }
   state = {
-    token: null,
     user: this.initialUser,
     error: null
   }
@@ -52,9 +51,10 @@ class App extends React.Component {
       .then(res => res.json())
       .then(data => {
         if (!data.statusText) {
-          this.setState({ token: data.jwt, user: { ...this.initialUser, display_name: data.user.display_name }, error: null })
-        }
-        else
+          localStorage.setItem('token', data.jwt)
+          localStorage.setItem('displayName', data.user.display_name)
+          this.setState({ user: { ...this.initialUser, display_name: data.user.display_name }, error: null })
+        } else
           this.setState({ error: data.statusText })
       })
       .catch(console.log)
@@ -74,9 +74,11 @@ class App extends React.Component {
       // .then(this.handleErrors)
       .then(res => res.json())
       .then(data => {
-        if (!data.statusText)
-          this.setState({ token: data.jwt, user: data.user, error: null })
-        else
+        if (!data.statusText) {
+          this.setState({ user: data.user, error: null })
+          localStorage.setItem('token', data.jwt)
+          localStorage.setItem('displayName', data.user.display_name)
+        } else
           this.setState({ error: data.statusText })
       })
       .catch(console.log)
@@ -87,26 +89,36 @@ class App extends React.Component {
     this.setState({ error: null })
   }
 
+  handleLogout = (_) => {
+    localStorage.clear()
+    this.setState({ user: { ...this.initialUser } })
+  }
+
   render() {
+    const token = localStorage.getItem('token')
     return (
       <Router>
         <Navbar />
-        <Container>
-          <Switch>
-            <Route path='/login'>
-              <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} token={this.state.token} resetError={this.resetError} />
-            </Route>
-            <Route path='/signup'>
-              <Signup handleLoginChange={this.handleLoginChange} handleSubmit={this.handleSignupSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />
-            </Route>
-            <Route path='/'>
-              {this.state.token ?
-                <YelpContainer user={this.state.user} /> :
-                <Redirect to='/login' />}
-            </Route>
-          </Switch>
-        </Container>
+        <div>
+
+          <Container style={{ marginTop: '7em', padding: '0 2em' }} fluid >
+            <Switch>
+              <Route path='/login'>
+                {token ? <Redirect to='/' /> : <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
+              </Route>
+              <Route path='/signup'>
+                {token ? <Redirect to='/' /> : <Signup handleLoginChange={this.handleLoginChange} handleSubmit={this.handleSignupSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
+              </Route>
+              <Route path='/'>
+                {token ?
+                  <YelpContainer user={this.state.user} handleLogout={this.handleLogout} /> :
+                  <Redirect to='/login' />}
+              </Route>
+            </Switch>
+          </Container>
+        </div>
       </Router >
+
     );
   }
 }

@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom'
 
 const Navbar = (props) => {
     return (
-        <Menu>
+        <Menu fixed='top'>
             <NavLink exact className='item' to='/' >
                 FLELP
             </NavLink>
