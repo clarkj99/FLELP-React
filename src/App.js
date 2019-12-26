@@ -98,10 +98,10 @@ class App extends React.Component {
     const token = localStorage.getItem('token')
     return (
       <Router>
-        <Navbar />
+        <Navbar handleLogout={this.handleLogout} />
         <div>
 
-          <Container style={{ marginTop: '7em', padding: '0 2em' }} fluid >
+          <Container fluid style={{ margin: '7em 0 0 0', padding: '0 2em' }} >
             <Switch>
               <Route path='/login'>
                 {token ? <Redirect to='/' /> : <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}

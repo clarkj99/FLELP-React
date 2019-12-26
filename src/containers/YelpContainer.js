@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Header, Grid, Button } from 'semantic-ui-react'
+import { Header, Grid } from 'semantic-ui-react'
 import LocationForm from '../components/LocationForm'
 import LocationContainer from './LocationContainer'
 
@@ -32,7 +32,7 @@ class YelpContainer extends React.Component {
             .then(res => res.json())
             .then(data => {
                 if (!data.statusText) {
-                    this.setState({ locationList: data })
+                    this.setState({ locationList: data, location: { ...this.initialLocation } })
                 } else {
                     console.error(data.statusText);
                 }
@@ -62,17 +62,15 @@ class YelpContainer extends React.Component {
             })
     }
 
-
-
     render() {
         return (
             <Fragment>
-                <Header>Hello, {localStorage.getItem('displayName')} </Header><Button onClick={this.props.handleLogout}>Logout</Button>
+                <Header>Hello, {localStorage.getItem('displayName')} </Header>
                 <Grid columns={2} centered>
-                    <Grid.Column width={4}>
+                    <Grid.Column width={6}>
                         <LocationForm location={this.state.location} handleFormChange={this.handleFormChange} handleSubmit={this.handleSubmit} />
                     </Grid.Column>
-                    <Grid.Column width={12}>
+                    <Grid.Column width={10}>
                         <LocationContainer locationList={this.state.locationList} />
 
                     </Grid.Column>

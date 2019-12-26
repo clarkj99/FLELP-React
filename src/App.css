@@ -1,1 +1,8 @@
+img.ui.image.business-image {
+  height: 200px;
+  object-fit: cover;
+}
 
+.ui.card.business-card {
+  width: 200px;
+}

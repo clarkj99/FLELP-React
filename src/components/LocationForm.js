@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react'
-import { Form, Header, Input, Button } from 'semantic-ui-react'
+import React from 'react'
+import { Form, Header, Input, Button, Segment } from 'semantic-ui-react'
 
 class LocationForm extends React.Component {
     render() {
         const { handleFormChange, handleSubmit, location } = this.props
         return (
-            <Fragment>
+            <Segment>
                 <Header>Add a Location</Header>
                 <Form onSubmit={handleSubmit}>
                     <Form.Field
@@ -50,7 +50,7 @@ class LocationForm extends React.Component {
                     />
                     <Button type='submit'>Add Location</Button>
                 </Form>
-            </Fragment>
+            </Segment>
         )
     }
 }
