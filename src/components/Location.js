@@ -1,20 +1,26 @@
 import React from 'react'
-import { Card } from 'semantic-ui-react'
+import { Card, Button } from 'semantic-ui-react'
 
 class Location extends React.Component {
     render() {
-        const { location, handleClick } = this.props
+        const { location, handleViewClick, handleEditClick, handleDeleteClick } = this.props
         return (
-            <Card onClick={(e) => handleClick(e, location)}>
+            <Card >
                 <Card.Content>
-                    <Card.Header>{location.name}</Card.Header>
+                    <Card.Header>{location.name} </Card.Header>
                     <Card.Description>
                         {location.address1}{' '}
                         {location.city},{' '}
                         {location.state}{' '}
                         {location.zip}
                     </Card.Description>
+
                 </Card.Content>
+                <Button.Group>
+                    <Button icon='eye' content='View' onClick={(e) => handleViewClick(e, location)} />
+                    <Button icon='edit' content='Edit' onClick={(e) => handleEditClick(e, location)} />
+                    <Button icon='delete' content='Delete' onClick={(e) => handleDeleteClick(e, location)} />
+                </Button.Group>
             </Card>
         )
     }

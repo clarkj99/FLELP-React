@@ -3,29 +3,28 @@ import { Header, Card, Segment } from 'semantic-ui-react'
 import Location from '../components/Location'
 import LocationDetails from './LocationDetails'
 
-
-
 class LocationContainer extends React.Component {
     state = { selectedLocation: null }
 
-    handleClick = (e, location) => {
-        console.log(location);
+    handleViewClick = (e, location) => {
+        this.props.handleCancel()
         this.setState({ selectedLocation: location })
     }
+
 
     handleShowAll = () => {
         this.setState({ selectedLocation: null })
     }
 
     render() {
-        const { locationList } = this.props
+        const { locationList, handleDeleteClick, addingLocation } = this.props
         return (
             <Segment>
-                <Header> Saved Locations</Header>
-                {this.state.selectedLocation ? <LocationDetails selectedLocation={this.state.selectedLocation} handleShowAll={this.handleShowAll} /> :
-                    <Card.Group>
+                <Header as='h2'>Saved Locations</Header>
+                {this.state.selectedLocation && !addingLocation ? <LocationDetails selectedLocation={this.state.selectedLocation} handleShowAll={this.handleShowAll} /> :
+                    <Card.Group centered>
                         {locationList.map(location => {
-                            return <Location key={location.id} location={location} handleClick={this.handleClick} />
+                            return <Location key={location.id} location={location} handleViewClick={this.handleViewClick} handleDeleteClick={handleDeleteClick} />
                         })
                         }
                     </Card.Group>}

@@ -6,3 +6,8 @@ img.ui.image.business-image {
 .ui.card.business-card {
   width: 200px;
 }
+
+h2.ui.header,
+.header {
+  text-transform: capitalize;
+}

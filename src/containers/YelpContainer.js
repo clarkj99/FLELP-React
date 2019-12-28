@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react'
-import { Header, Grid } from 'semantic-ui-react'
+
 import LocationForm from '../components/LocationForm'
 import LocationContainer from './LocationContainer'
+import LocationHeader from '../components/LocationHeader'
 
 class YelpContainer extends React.Component {
     initialLocation = {
@@ -16,8 +17,8 @@ class YelpContainer extends React.Component {
         location: {
             ...this.initialLocation
         },
-        locationList: []
-
+        locationList: [],
+        addingLocation: false
     }
     componentDidMount() {
         this.fetchLocations()
@@ -62,19 +63,35 @@ class YelpContainer extends React.Component {
             })
     }
 
+    handleDeleteClick = (e, location) => {
+        fetch(`http://localhost:3000/api/v1/locations/${location.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+            .then(res => res.json())
+            .then(response => {
+                this.fetchLocations()
+
+            })
+    }
+
+    handleShowAddForm = () => {
+        this.setState({ addingLocation: true })
+    }
+
+    handleCancel = () => {
+        this.setState({ addingLocation: false })
+    }
+
     render() {
         return (
             <Fragment>
-                <Header>Hello, {localStorage.getItem('displayName')} </Header>
-                <Grid columns={2} centered>
-                    <Grid.Column width={6}>
-                        <LocationForm location={this.state.location} handleFormChange={this.handleFormChange} handleSubmit={this.handleSubmit} />
-                    </Grid.Column>
-                    <Grid.Column width={10}>
-                        <LocationContainer locationList={this.state.locationList} />
+                <LocationHeader handleShowAddForm={this.handleShowAddForm} addingLocation={this.state.addingLocation} />
+                {this.state.addingLocation && <LocationForm location={this.state.location} handleFormChange={this.handleFormChange} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} />}
+                <LocationContainer locationList={this.state.locationList} addingLocation={this.state.addingLocation} handleDeleteClick={this.handleDeleteClick} handleCancel={this.handleCancel} />
 
-                    </Grid.Column>
-                </Grid>
             </Fragment>
         )
     }

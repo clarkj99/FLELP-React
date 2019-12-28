@@ -1,10 +1,19 @@
-import React, { Fragment } from 'react'
-import { Header, Button, Card } from 'semantic-ui-react'
+import React from 'react'
+import { Header, Button, Card, Container } from 'semantic-ui-react'
 import Business from '../components/Business'
 
 class LocationDetails extends React.Component {
-    state = { businesses: [] }
+    state = {
+        businesses: [],
+        favorites: []
+    }
+
     componentDidMount() {
+        this.fetchBusinesses()
+        this.fetchFavorites()
+    }
+
+    fetchBusinesses = () => {
         fetch(`http://localhost:3000/api/v1/businesses?location_id=${this.props.selectedLocation.id}`, {
             headers: { 'Authorization': `Bearer ${localStorage.token}` }
         })
@@ -17,16 +26,69 @@ class LocationDetails extends React.Component {
             })
     }
 
+
+    fetchFavorites = () => {
+        fetch('http://localhost:3000/api/v1/favorite_businesses', {
+            headers: { 'Authorization': `Bearer ${localStorage.token}` }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.statusText) {
+                    this.setState({ favorites: data })
+                } else
+                    this.setState({ error: data.statusText })
+            })
+
+    }
+
+    handleFavoriteClick = (e, business) => {
+        if (!this.isFavorite(business)) {
+            fetch(`http://localhost:3000/api/v1/favorite_businesses`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    business: business
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    this.fetchFavorites()
+                })
+        } else {
+            fetch(`http://localhost:3000/api/v1/favorite_businesses/${business.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+                    this.fetchFavorites()
+                })
+        }
+    }
+
+
+    isFavorite = (business) => {
+        return !!this.state.favorites.find((favorite) => favorite.business_id === business.id)
+    }
+
     render() {
         const { selectedLocation, handleShowAll } = this.props
         return (
-            <Fragment>
-                <Header>{selectedLocation.name}</Header>
-                <Button size='tiny' onClick={handleShowAll}>Show All</Button>
-                <Card.Group>
-                    {this.state.businesses.map(business => <Business key={business.id} business={business} />)}
+            <Container fluid style={{ margin: 0, padding: 0 }} textAlign='center'>
+
+                <Header as="h2">{selectedLocation.name},{' '}{selectedLocation.address1},{' '} {selectedLocation.zip}</Header>
+
+                <Button onClick={handleShowAll}>Show All Locations</Button>
+
+                <Card.Group style={{ marginTop: "20px" }} centered>
+                    {this.state.businesses.map(business => <Business key={business.id} business={business} isFavorite={this.isFavorite(business)} handleFavoriteClick={this.handleFavoriteClick} />)}
                 </Card.Group>
-            </Fragment>
+            </Container>
         )
     }
 

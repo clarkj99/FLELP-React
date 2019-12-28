@@ -3,7 +3,7 @@ import { Form, Header, Input, Button, Segment } from 'semantic-ui-react'
 
 class LocationForm extends React.Component {
     render() {
-        const { handleFormChange, handleSubmit, location } = this.props
+        const { handleFormChange, handleSubmit, location, handleCancel } = this.props
         return (
             <Segment>
                 <Header>Add a Location</Header>
@@ -49,6 +49,7 @@ class LocationForm extends React.Component {
                         value={location.zip}
                     />
                     <Button type='submit'>Add Location</Button>
+                    <Button onClick={handleCancel}>Cancel</Button>
                 </Form>
             </Segment>
         )
