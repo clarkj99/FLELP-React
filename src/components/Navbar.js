@@ -9,10 +9,17 @@ const Navbar = (props) => {
             <NavLink exact className='item' to='/' >
                 FLELP
             </NavLink>
-            {token ?
-                <NavLink className='item' to='/' onClick={props.handleLogout} >
+            {token ? <Fragment>
+                <NavLink className='item' to="/favorites">
+                    Favorites
+                </NavLink>
+                <NavLink className='item' to="/locations">
+                    Locations
+                </NavLink>
+                <NavLink exact className='item' to='/' onClick={props.handleLogout} >
                     Logout
-            </NavLink> : <Fragment>
+            </NavLink>
+            </Fragment> : <Fragment>
                     <NavLink className='item' to='/login' >
                         Login
             </NavLink>

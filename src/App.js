@@ -1,12 +1,13 @@
 import React from 'react';
-import './App.css';
-import 'semantic-ui-css/semantic.min.css'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { Container } from 'semantic-ui-react'
+import 'semantic-ui-css/semantic.min.css'
+import './App.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import YelpContainer from './containers/YelpContainer';
+import FavoritesContainer from './containers/FavoritesContainer';
 
 class App extends React.Component {
   initialUser = {
@@ -14,9 +15,19 @@ class App extends React.Component {
     password: '',
     display_name: ''
   }
-  state = {
+
+  initialState = {
     user: this.initialUser,
-    error: null
+    error: null,
+    favorites: []
+  }
+
+  state = {
+    ...this.initialState
+  }
+
+  componentDidMount() {
+    this.fetchFavorites()
   }
 
   handleLoginChange = (e) => {
@@ -54,6 +65,7 @@ class App extends React.Component {
           localStorage.setItem('token', data.jwt)
           localStorage.setItem('displayName', data.user.display_name)
           this.setState({ user: { ...this.initialUser, display_name: data.user.display_name }, error: null })
+          this.fetchFavorites()
         } else
           this.setState({ error: data.statusText })
       })
@@ -78,6 +90,7 @@ class App extends React.Component {
           this.setState({ user: data.user, error: null })
           localStorage.setItem('token', data.jwt)
           localStorage.setItem('displayName', data.user.display_name)
+          this.fetchFavorites()
         } else
           this.setState({ error: data.statusText })
       })
@@ -91,7 +104,55 @@ class App extends React.Component {
 
   handleLogout = (_) => {
     localStorage.clear()
-    this.setState({ user: { ...this.initialUser } })
+    this.setState({ ...this.initialState })
+  }
+
+  fetchFavorites = () => {
+    fetch('http://localhost:3000/api/v1/favorite_businesses', {
+      headers: { 'Authorization': `Bearer ${localStorage.token}` }
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.statusText) {
+          this.setState({ favorites: data })
+        } else
+          this.setState({ error: data.statusText })
+      })
+
+  }
+
+  handleFavoriteClick = (e, business) => {
+    if (!this.isFavorite(business)) {
+      fetch(`http://localhost:3000/api/v1/favorite_businesses`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+          business: business
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.fetchFavorites()
+        })
+    } else {
+      fetch(`http://localhost:3000/api/v1/favorite_businesses/${business.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.fetchFavorites()
+        })
+    }
+  }
+
+  isFavorite = (business) => {
+    return !!this.state.favorites.find((favorite) => favorite.business_id === business.id)
   }
 
   render() {
@@ -101,18 +162,21 @@ class App extends React.Component {
         <Navbar handleLogout={this.handleLogout} />
         <div>
 
-          <Container fluid style={{ margin: '7em 0 0 0', padding: '0 2em' }} >
+          <Container fluid style={{ margin: "7em 0 0 0", padding: "0 2em" }} >
             <Switch>
-              <Route path='/login'>
-                {token ? <Redirect to='/' /> : <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
+              <Route path="/login">
+                {token ? <Redirect to="/" /> : <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
               </Route>
-              <Route path='/signup'>
-                {token ? <Redirect to='/' /> : <Signup handleLoginChange={this.handleLoginChange} handleSubmit={this.handleSignupSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
+              <Route path="/signup">
+                {token ? <Redirect to="/" /> : <Signup handleLoginChange={this.handleLoginChange} handleSubmit={this.handleSignupSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
               </Route>
-              <Route path='/'>
+              <Route path="/favorites">
+                <FavoritesContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} />
+              </Route>
+              <Route path="/">
                 {token ?
-                  <YelpContainer user={this.state.user} handleLogout={this.handleLogout} /> :
-                  <Redirect to='/login' />}
+                  <YelpContainer user={this.state.user} handleLogout={this.handleLogout} favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} /> :
+                  <Redirect to="/login" />}
               </Route>
             </Switch>
           </Container>

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Card, Image, Button, Rating } from 'semantic-ui-react'
+import { Card, Image, Button } from 'semantic-ui-react'
+import StarRating from './StarRating'
 
 class Business extends React.Component {
 
@@ -17,7 +18,7 @@ class Business extends React.Component {
                 </Card.Content>
                 <Card.Content extra>
                     <Button icon='like' size='tiny' toggle active={isFavorite} onClick={(e) => handleFavoriteClick(e, business)} />
-                    <Rating disabled defaultRating={business.rating} maxRating={5} />
+                    <StarRating rating={business.rating} /> {" "}
 
                     <span>{business.price} </span>
                 </Card.Content>

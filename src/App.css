@@ -2,7 +2,11 @@ img.ui.image.business-image {
   height: 200px;
   object-fit: cover;
 }
-
+img.ui.image.favorite-image {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
 .ui.card.business-card {
   width: 200px;
 }
@@ -10,4 +14,15 @@ img.ui.image.business-image {
 h2.ui.header,
 .header {
   text-transform: capitalize;
+}
+
+html {
+  background-image: url("./images/giphy.gif");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+body {
+  background-color: transparent;
 }

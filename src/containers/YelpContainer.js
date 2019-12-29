@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import LocationForm from '../components/LocationForm'
 import LocationContainer from './LocationContainer'
 import LocationHeader from '../components/LocationHeader'
+import { Segment } from 'semantic-ui-react'
 
 class YelpContainer extends React.Component {
     initialLocation = {
@@ -88,9 +89,11 @@ class YelpContainer extends React.Component {
     render() {
         return (
             <Fragment>
-                <LocationHeader handleShowAddForm={this.handleShowAddForm} addingLocation={this.state.addingLocation} />
+                <Segment>
+                    <LocationHeader handleShowAddForm={this.handleShowAddForm} addingLocation={this.state.addingLocation} />
+                </Segment>
                 {this.state.addingLocation && <LocationForm location={this.state.location} handleFormChange={this.handleFormChange} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} />}
-                <LocationContainer locationList={this.state.locationList} addingLocation={this.state.addingLocation} handleDeleteClick={this.handleDeleteClick} handleCancel={this.handleCancel} />
+                <LocationContainer locationList={this.state.locationList} addingLocation={this.state.addingLocation} handleDeleteClick={this.handleDeleteClick} handleCancel={this.handleCancel} favorites={this.props.favorites} handleFavoriteClick={this.props.handleFavoriteClick} />
 
             </Fragment>
         )
