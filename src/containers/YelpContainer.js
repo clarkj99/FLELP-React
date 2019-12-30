@@ -89,9 +89,9 @@ class YelpContainer extends React.Component {
     render() {
         return (
             <Fragment>
-                <Segment>
+                {/* <Segment>
                     <LocationHeader handleShowAddForm={this.handleShowAddForm} addingLocation={this.state.addingLocation} />
-                </Segment>
+                </Segment> */}
                 {this.state.addingLocation && <LocationForm location={this.state.location} handleFormChange={this.handleFormChange} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} />}
                 <LocationContainer locationList={this.state.locationList} addingLocation={this.state.addingLocation} handleDeleteClick={this.handleDeleteClick} handleCancel={this.handleCancel} favorites={this.props.favorites} handleFavoriteClick={this.props.handleFavoriteClick} />
 

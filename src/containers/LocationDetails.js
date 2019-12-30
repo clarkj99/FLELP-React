@@ -76,12 +76,10 @@ class LocationDetails extends React.Component {
     render() {
         const { selectedLocation, handleShowAll } = this.props
         return (
-            <Container fluid style={{ margin: 0, padding: 0 }} textAlign='center'>
-                <Segment>
-                    <Header as="h2">{selectedLocation.name},{' '}{selectedLocation.address1},{' '} {selectedLocation.zip}</Header>
+            <Container fluid style={{ margin: "2em 0 0 0", padding: "0" }} textAlign='center'>
+                <Header inverted as="h2">{selectedLocation.name},{' '}{selectedLocation.address1},{' '} {selectedLocation.zip}</Header>
 
-                    <Button onClick={handleShowAll}>Show All Locations</Button>
-                </Segment>
+                <Button onClick={handleShowAll}>Show All Locations</Button>
                 <Card.Group style={{ marginTop: "20px" }} centered>
                     {!!this.state.businesses.length ? this.state.businesses.map(business => <Business key={business.id} business={business} isFavorite={this.isFavorite(business)} handleFavoriteClick={this.props.handleFavoriteClick} />) : <Card> <Loader active /></Card>}
                 </Card.Group>

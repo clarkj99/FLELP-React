@@ -6,7 +6,7 @@ import './App.css';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Navbar from './components/Navbar';
-import YelpContainer from './containers/YelpContainer';
+import LocationContainer from './containers/LocationContainer';
 import FavoritesContainer from './containers/FavoritesContainer';
 
 class App extends React.Component {
@@ -160,26 +160,25 @@ class App extends React.Component {
     return (
       <Router>
         <Navbar handleLogout={this.handleLogout} />
-        <div>
+        <div style={{ margin: "4em 0 0 0", padding: "0 " }}>
 
-          <Container fluid style={{ margin: "7em 0 0 0", padding: "0 2em" }} >
-            <Switch>
-              <Route path="/login">
-                {token ? <Redirect to="/" /> : <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
-              </Route>
-              <Route path="/signup">
-                {token ? <Redirect to="/" /> : <Signup handleLoginChange={this.handleLoginChange} handleSubmit={this.handleSignupSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
-              </Route>
-              <Route path="/favorites">
-                <FavoritesContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} />
-              </Route>
-              <Route path="/">
-                {token ?
-                  <YelpContainer user={this.state.user} handleLogout={this.handleLogout} favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} /> :
-                  <Redirect to="/login" />}
-              </Route>
-            </Switch>
-          </Container>
+
+          <Switch>
+            <Route path="/login">
+              {token ? <Redirect to="/" /> : <Login handleLoginChange={this.handleLoginChange} handleSubmit={this.handleLoginSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
+            </Route>
+            <Route path="/signup">
+              {token ? <Redirect to="/" /> : <Signup handleLoginChange={this.handleLoginChange} handleSubmit={this.handleSignupSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
+            </Route>
+            <Route path="/favorites">
+              <FavoritesContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} />
+            </Route>
+            <Route path="/">
+              {token ?
+                <LocationContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} /> :
+                <Redirect to="/login" />}
+            </Route>
+          </Switch>
         </div>
       </Router >
 

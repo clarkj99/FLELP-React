@@ -9,9 +9,7 @@ class FavoritesContainer extends React.Component {
         const { favorites, handleFavoriteClick } = this.props
         return (
             <Container fluid style={{ margin: 0, padding: 0 }} textAlign='center'>
-                <Segment>
-                    <Header>Favorites</Header>
-                </Segment>
+                <Header inverted as="h2">Favorites</Header>
                 <Card.Group centered>
                     {favorites.map((favorite, index) => {
                         return <FavoriteBusiness key={favorite.id} favorite={favorite} isFavorite={true} handleFavoriteClick={handleFavoriteClick} index={index} />

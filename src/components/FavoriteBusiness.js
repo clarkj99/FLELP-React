@@ -33,7 +33,7 @@ class FavoriteBusiness extends React.Component {
         const { business } = this.state
         return (
             <Fragment>
-                <Card className='business-card' style={{ width: '300px' }}>
+                <Card className='business-card' style={{ width: '400px' }}>
                     {!!business ? <Fragment>
 
                         <Card.Content>
