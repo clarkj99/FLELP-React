@@ -26,3 +26,6 @@ html {
 body {
   background-color: transparent;
 }
+.ui.card .content {
+  overflow: hidden;
+}

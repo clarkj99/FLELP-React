@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Navbar from './components/Navbar';
 import LocationContainer from './containers/LocationContainer';
 import FavoritesContainer from './containers/FavoritesContainer';
+import HomeContainer from './containers/HomeContainer';
 
 class App extends React.Component {
   initialUser = {
@@ -35,14 +36,6 @@ class App extends React.Component {
     })
   }
 
-  handleErrors = (response) => {
-    if (!response.ok) {
-      this.setState({ error: response.statusText })
-      throw Error(response.statusText);
-    }
-    return response;
-  }
-
   handleLoginSubmit = (e) => {
     e.preventDefault()
     fetch('http://localhost:3000/api/v1/login', {
@@ -57,7 +50,6 @@ class App extends React.Component {
         }
       })
     })
-      // .then(this.handleErrors)
       .then(res => res.json())
       .then(data => {
         if (!data.statusText) {
@@ -82,7 +74,6 @@ class App extends React.Component {
         user: this.state.user
       })
     })
-      // .then(this.handleErrors)
       .then(res => res.json())
       .then(data => {
         if (!data.statusText) {
@@ -170,11 +161,17 @@ class App extends React.Component {
               {token ? <Redirect to="/" /> : <Signup handleLoginChange={this.handleLoginChange} handleSubmit={this.handleSignupSubmit} user={this.state.user} error={this.state.error} resetError={this.resetError} />}
             </Route>
             <Route path="/favorites">
-              <FavoritesContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} />
+              {token ? <FavoritesContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} /> :
+                <Redirect to="/login" />}
             </Route>
-            <Route path="/">
+            <Route path="/locations">
               {token ?
                 <LocationContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} /> :
+                <Redirect to="/login" />}
+            </Route>
+            <Route exact path="/">
+              {token ?
+                <HomeContainer /> :
                 <Redirect to="/login" />}
             </Route>
           </Switch>
