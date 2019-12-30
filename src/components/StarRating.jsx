@@ -10,6 +10,7 @@ class StarRating extends React.Component {
   render() {
     return (
       <img
+        alt={this.props.rating.toString()}
         src={require("../yelp_stars/web_and_ios/large/large_" +
           this.starFile() +
           ".png")}

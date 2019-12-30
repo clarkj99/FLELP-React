@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Header, Grid, Button } from 'semantic-ui-react'
+import { Header, Button } from 'semantic-ui-react'
 
 function LocationHeader(props) {
 

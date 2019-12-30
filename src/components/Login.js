@@ -35,7 +35,7 @@ class Login extends React.Component {
                 </Segment>
             </Container>
 
-        ) 
+        )
     }
 }
 
