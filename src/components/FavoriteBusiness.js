@@ -1,17 +1,17 @@
 import React, { Fragment } from 'react'
-import { Card, Image, Button, Rating, Loader, Label } from 'semantic-ui-react'
+import { Card, Image, Button, Message, Loader, Label } from 'semantic-ui-react'
 import StarRating from './StarRating'
 
 
 class FavoriteBusiness extends React.Component {
 
     state = {
-        business: null
+        business: null,
+        error: null
     }
 
     componentDidMount() {
-        let time = this.props.index * 400
-        window.setTimeout(this.fetchBusiness, time)
+        this.fetchBusiness()
     }
 
 
@@ -21,10 +21,11 @@ class FavoriteBusiness extends React.Component {
         })
             .then(res => res.json())
             .then(data => {
-                if (!data.statusText) {
+                console.log(data);
+                if (!data.error) {
                     this.setState({ business: data })
                 } else
-                    this.setState({ error: data.statusText })
+                    this.setState({ error: data.error.description })
             })
     }
 
@@ -33,7 +34,7 @@ class FavoriteBusiness extends React.Component {
         const { business } = this.state
         return (
             <Fragment>
-                <Card className='business-card' style={{ width: '400px' }}>
+                <Card className='business-card' style={{ width: '290px' }}>
                     {!!business ? <Fragment>
 
                         <Card.Content>
@@ -41,7 +42,7 @@ class FavoriteBusiness extends React.Component {
                             {/* <Image className='business-image' src={business.image_url} /> */}
 
                             <Card.Description>
-                                {business.photos.map(photo => <Image src={photo} size="medium" className="favorite-image" />)}
+                                {business.photos && business.photos.map((photo, index) => <Image key={index} src={photo} size="medium" className="favorite-image" />)}
                                 <p>{business.location.display_address[0]} <br /> {business.location.display_address[1]} <br />{business.location.display_address[2]}</p>
                                 <p>{business.display_phone}</p>
                             </Card.Description>
@@ -50,10 +51,13 @@ class FavoriteBusiness extends React.Component {
                             <StarRating rating={business.rating} /> {" "}
                             <span>{business.price} </span>
                             <br /> <Button icon='like' size='tiny' toggle active={isFavorite} onClick={(e) => handleFavoriteClick(e, business)} />
-                            {business.categories.map(category => <Label  >{category.title}</Label>)}
+                            {business.categories && business.categories.map((category, index) => <Label key={index}>{category.title}</Label>)}
 
-                        </Card.Content></Fragment> :
-                        <Loader active />}
+                        </Card.Content></Fragment> : <Fragment>
+                            {!!this.state.error && <Card.Content textAlign="left">
+                                <Message error icon="exclamation triangle"
+                                    content={this.state.error} /></Card.Content>}
+                            <Loader active={!this.state.error} /></Fragment>}
                 </Card >
             </Fragment>
         )

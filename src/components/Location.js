@@ -5,10 +5,10 @@ class Location extends React.Component {
     render() {
         const { location, handleViewClick, handleEditClick, handleDeleteClick } = this.props
         let fullAddress = [location.address1, location.address2, location.city, location.state, location.zip].join(" ")
-        let mapURL = 'https://maps.googleapis.com/maps/api/staticmap?center=' + fullAddress + '&zoom=15&size=400x225&markers=color:red|' + fullAddress + '|&key=AIzaSyBQChNx8YgqyqaE9isFq34G5WIfbCKL5-Y'
+        let mapURL = 'https://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&center=' + fullAddress + '&zoom=15&size=400x225&markers=color:red|' + fullAddress + '|&key=AIzaSyBQChNx8YgqyqaE9isFq34G5WIfbCKL5-Y'
         return (
             <Card >
-                <Image src={encodeURI(mapURL)} />
+                <Image src={encodeURI(mapURL)} alt={location.name} />
                 <Card.Content>
                     <Card.Header>{location.name} </Card.Header>
                     <Card.Description>

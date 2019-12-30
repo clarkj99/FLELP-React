@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Button, Card, Container, Loader } from 'semantic-ui-react'
+import { Header, Button, Card, Container, Loader, Message } from 'semantic-ui-react'
 import Business from '../components/Business'
 
 class LocationDetails extends React.Component {
@@ -17,10 +17,10 @@ class LocationDetails extends React.Component {
         })
             .then(res => res.json())
             .then(data => {
-                if (!data.statusText) {
+                if (!data.error) {
                     this.setState({ businesses: data.businesses })
                 } else
-                    this.setState({ error: data.statusText })
+                    this.setState({ error: data.error.description })
             })
     }
 
@@ -36,9 +36,13 @@ class LocationDetails extends React.Component {
                 <Header inverted as="h2">{selectedLocation.name},{' '}{selectedLocation.address1},{' '} {selectedLocation.zip}</Header>
 
                 <Button onClick={handleShowAll}>Show All Locations</Button>
-                <Card.Group style={{ marginTop: "20px" }} centered>
-                    {!!this.state.businesses.length ? this.state.businesses.map(business => <Business key={business.id} business={business} isFavorite={this.isFavorite(business)} handleFavoriteClick={handleFavoriteClick} />) : <Card> <Loader active /></Card>}
-                </Card.Group>
+                {!this.state.error ?
+                    <Card.Group style={{ marginTop: "20px" }} centered>
+                        {this.state.businesses && !!this.state.businesses.length ? this.state.businesses.map(business => <Business key={business.id} business={business} isFavorite={this.isFavorite(business)} handleFavoriteClick={handleFavoriteClick} />) : <Card> <Loader active /></Card>}
+                    </Card.Group> :
+                    <Message error icon="exclamation triangle"
+                        content={this.state.error} />
+                }
             </Container>
         )
     }
