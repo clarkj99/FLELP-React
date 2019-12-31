@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Card, Container, Segment } from 'semantic-ui-react'
+import { Header, Card, Container } from 'semantic-ui-react'
 import FavoriteBusiness from '../components/FavoriteBusiness'
 
 class FavoritesContainer extends React.Component {

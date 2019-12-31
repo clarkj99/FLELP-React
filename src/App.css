@@ -29,3 +29,7 @@ body {
 .ui.card .content {
   overflow: hidden;
 }
+
+.map-container {
+  height: 200px;
+}

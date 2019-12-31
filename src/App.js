@@ -171,7 +171,7 @@ class App extends React.Component {
             </Route>
             <Route exact path="/">
               {token ?
-                <HomeContainer /> :
+                <HomeContainer favorites={this.state.favorites} /> :
                 <Redirect to="/login" />}
             </Route>
           </Switch>
