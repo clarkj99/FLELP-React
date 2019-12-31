@@ -101,7 +101,7 @@ class LocationContainer extends React.Component {
     render() {
         const { addingLocation, location, selectedLocation, locationList } = this.state
         return (
-            <Container fluid textAlign="center">
+            <Container fluid style={{ margin: "2em 0 0 0 " }} textAlign="center">
                 <LocationHeader handleShowAddForm={this.handleShowAddForm} addingLocation={addingLocation} />
                 <Grid style={{ margin: "0 2em" }} columns={addingLocation ? 2 : 1}>
                     {addingLocation && <Grid.Column><LocationForm location={location} handleFormChange={this.handleFormChange} handleSubmit={this.handleSubmit} handleCancel={this.handleCancel} /></Grid.Column>}

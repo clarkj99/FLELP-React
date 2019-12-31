@@ -27,7 +27,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchFavorites()
+    if (!this.state.favorites.length)
+      this.fetchFavorites()
   }
 
   handleLoginChange = (e) => {
@@ -150,7 +151,7 @@ class App extends React.Component {
     return (
       <Router>
         <Navbar handleLogout={this.handleLogout} />
-        <div style={{ margin: "4em 0 0 0", padding: "0 " }}>
+        <div style={{ margin: "0em 0 0 0", padding: "0 " }}>
 
 
           <Switch>

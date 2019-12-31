@@ -33,3 +33,13 @@ body {
 .map-container {
   height: 200px;
 }
+
+.marker-image {
+  height: 100px;
+  object-fit: cover;
+}
+
+.home-description p,
+.home-description ul {
+  font-size: 50px;
+}

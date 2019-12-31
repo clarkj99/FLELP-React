@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 const Navbar = (props) => {
     const token = localStorage.getItem('token')
     return (
-        <Menu inverted fixed='top'>
+        <Menu inverted style={{ margin: "0" }}>
             <NavLink exact className='item' to='/' >
                 FLELP
             </NavLink>
