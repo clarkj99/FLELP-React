@@ -170,10 +170,11 @@ class App extends React.Component {
                 <LocationContainer favorites={this.state.favorites} handleFavoriteClick={this.handleFavoriteClick} /> :
                 <Redirect to="/login" />}
             </Route>
+            <Route exact path="/home">
+              <HomeContainer favorites={this.state.favorites} />
+            </Route>
             <Route exact path="/">
-              {token ?
-                <HomeContainer favorites={this.state.favorites} /> :
-                <Redirect to="/login" />}
+              <Redirect to="/home" />}
             </Route>
           </Switch>
         </div>

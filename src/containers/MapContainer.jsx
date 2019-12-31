@@ -26,7 +26,7 @@ export class MapContainer extends React.Component {
   };
 
   adjustMap = (mapProps, map) => {
-    const { google, markers } = mapProps;
+    const { google } = mapProps;
     const bounds = new google.maps.LatLngBounds();
 
     this.props.favorites.forEach(favorite => {
@@ -35,72 +35,83 @@ export class MapContainer extends React.Component {
         lng: favorite.longitude
       });
     });
-    if (!this.props.favorites) map.fitBounds(bounds);
+    console.log("Length", this.props.favorites.length);
+    if (!!this.props.favorites.length) map.fitBounds(bounds);
     // map.panToBounds(bounds);
   };
 
   render() {
     const mapStyles = { width: "100%", height: "500px", position: "relative" };
     const { favorites } = this.props;
-    console.log(favorites);
     return (
       <Fragment>
-        {!favorites.length && (
-          <Message
-            attached="top"
-            warning
-            header="You don't have any Favorite Businesses Saved!"
-            content="Do something about that to see your favorite businesses here!"
-          ></Message>
-        )}
-        <Map
-          onClick={this.onMapClicked}
-          google={this.props.google}
-          zoom={10}
-          style={mapStyles}
-          containerStyle={{ position: "relative" }}
-          initialCenter={{ lat: 33.8864328, lng: -84.1352602 }}
-          onReady={this.adjustMap}
-        >
-          {favorites &&
-            favorites.map(favorite => {
-              return (
-                <Marker
-                  onClick={this.onMarkerClick}
-                  key={favorite.id}
-                  name={favorite.name}
-                  address={favorite.location}
-                  phone={favorite.phone}
-                  image={favorite.image_url}
-                  position={{
-                    lat: favorite.latitude,
-                    lng: favorite.longitude
-                  }}
-                ></Marker>
-              );
-            })}
-          <InfoWindow
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
+        {!favorites.length ? (
+          <Message warning>
+            <Message.Header>
+              You don't have any Favorite Businesses Saved!
+            </Message.Header>
+            <Message.Content>
+              Do something about that to see your favorite businesses here!
+              <br />
+              {localStorage.getItem("token") ? (
+                <a href="/locations">Choose Favorites</a>
+              ) : (
+                <Fragment>
+                  <a href="/login">Login</a> / <a href="/signup">Signup</a>
+                </Fragment>
+              )}
+            </Message.Content>
+          </Message>
+        ) : (
+          <Map
+            onClick={this.onMapClicked}
+            google={this.props.google}
+            zoom={10}
+            style={mapStyles}
+            containerStyle={{ position: "relative" }}
+            initialCenter={{ lat: 33.8864328, lng: -84.1352602 }}
+            onReady={this.adjustMap}
           >
-            <Card>
-              <Image
-                className="marker-image"
-                src={this.state.selectedPlace.image}
-              />
-              <Card.Content>
-                <Card.Header>{this.state.selectedPlace.name}</Card.Header>
-                <Card.Description>
-                  <Icon name="home" />
-                  {this.state.selectedPlace.address}
-                  <br />
-                  <Icon name=" phone" />
-                  {this.state.selectedPlace.phone}
-                </Card.Description>
-              </Card.Content>
-            </Card>
-          </InfoWindow>
-        </Map>
+            {favorites &&
+              favorites.map(favorite => {
+                return (
+                  <Marker
+                    onClick={this.onMarkerClick}
+                    key={favorite.id}
+                    name={favorite.name}
+                    address={favorite.location}
+                    phone={favorite.phone}
+                    image={favorite.image_url}
+                    position={{
+                      lat: favorite.latitude,
+                      lng: favorite.longitude
+                    }}
+                  ></Marker>
+                );
+              })}
+            <InfoWindow
+              marker={this.state.activeMarker}
+              visible={this.state.showingInfoWindow}
+            >
+              <Card>
+                <Image
+                  className="marker-image"
+                  src={this.state.selectedPlace.image}
+                />
+                <Card.Content>
+                  <Card.Header>{this.state.selectedPlace.name}</Card.Header>
+                  <Card.Description>
+                    <Icon name="home" />
+                    {this.state.selectedPlace.address}
+                    <br />
+                    <Icon name=" phone" />
+                    {this.state.selectedPlace.phone}
+                  </Card.Description>
+                </Card.Content>
+              </Card>
+            </InfoWindow>
+          </Map>
+        )}
       </Fragment>
     );
   }

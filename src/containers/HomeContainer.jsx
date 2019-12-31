@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import MyMap from "./MapContainer";
 import { Container, Grid, Header, List } from "semantic-ui-react";
 
@@ -19,21 +19,25 @@ class HomeContainer extends React.Component {
               <List.Item>
                 <List.Icon inverted name="marker" />
                 <List.Content>
-                  <List.Header as="a">Login or Create an Account</List.Header>
+                  <List.Header as="a" href="/login">
+                    Login or Create an Account
+                  </List.Header>
                   <List.Description></List.Description>
                 </List.Content>
               </List.Item>
               <List.Item>
                 <List.Icon inverted name="marker" />
                 <List.Content>
-                  <List.Header as="a">Set up Your Locations</List.Header>
+                  <List.Header as="a" href="/locations">
+                    Set up Your Locations
+                  </List.Header>
                   <List.Description></List.Description>
                 </List.Content>
               </List.Item>
               <List.Item>
                 <List.Icon inverted name="marker" />
                 <List.Content>
-                  <List.Header as="a">
+                  <List.Header as="a" href="/favorites">
                     Choose Your Favorite Businesses
                   </List.Header>
                   <List.Description></List.Description>
