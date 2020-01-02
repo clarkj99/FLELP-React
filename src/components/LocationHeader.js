@@ -5,7 +5,7 @@ function LocationHeader(props) {
 
     return (
         <Fragment>
-            <Header inverted as="h2">Hello, {localStorage.getItem('displayName')} </Header>
+            <Header inverted as="h2">Locations </Header>
             {!props.addingLocation && <Button onClick={props.handleShowAddForm}>Add a Location</Button>}
         </Fragment>
     )

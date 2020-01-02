@@ -1,6 +1,7 @@
 import React from "react";
 import MyMap from "./MapContainer";
 import { Container, Grid, Header, List } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 class HomeContainer extends React.Component {
   render() {
@@ -19,8 +20,8 @@ class HomeContainer extends React.Component {
               <List.Item>
                 <List.Icon inverted name="marker" />
                 <List.Content>
-                  <List.Header as="a" href="/login">
-                    Login or Create an Account
+                  <List.Header>
+                    <Link to="/login">Login or Create an Account</Link>
                   </List.Header>
                   <List.Description></List.Description>
                 </List.Content>
@@ -28,8 +29,8 @@ class HomeContainer extends React.Component {
               <List.Item>
                 <List.Icon inverted name="marker" />
                 <List.Content>
-                  <List.Header as="a" href="/locations">
-                    Set up Your Locations
+                  <List.Header>
+                    <Link to="/locations">Set up Your Locations</Link>
                   </List.Header>
                   <List.Description></List.Description>
                 </List.Content>
@@ -37,8 +38,8 @@ class HomeContainer extends React.Component {
               <List.Item>
                 <List.Icon inverted name="marker" />
                 <List.Content>
-                  <List.Header as="a" href="/favorites">
-                    Choose Your Favorite Businesses
+                  <List.Header>
+                    <Link to="/favorites">Choose Your Favorite Businesses</Link>
                   </List.Header>
                   <List.Description></List.Description>
                 </List.Content>

@@ -21,7 +21,6 @@ class FavoriteBusiness extends React.Component {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
                 if (!data.error) {
                     this.setState({ business: data })
                 } else

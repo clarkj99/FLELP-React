@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Map, Marker, GoogleApiWrapper, InfoWindow } from "google-maps-react";
 import { Image, Card, Icon, Message } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 export class MapContainer extends React.Component {
   state = {
@@ -54,10 +55,11 @@ export class MapContainer extends React.Component {
               Do something about that to see your favorite businesses here!
               <br />
               {localStorage.getItem("token") ? (
-                <a href="/locations">Choose Favorites</a>
+                <Link to="/locations">Choose Favorites</Link>
               ) : (
                 <Fragment>
-                  <a href="/login">Login</a> / <a href="/signup">Signup</a>
+                  <Link to="/login">Login</Link> /
+                  <Link to="/signup">Signup</Link>
                 </Fragment>
               )}
             </Message.Content>
