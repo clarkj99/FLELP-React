@@ -18,6 +18,11 @@ class FavoriteBusiness extends React.Component {
     fetchBusiness = () => {
         fetch(`http://localhost:3000/api/v1/businesses/${this.props.favorite.business_id}`, {
             headers: { 'Authorization': `Bearer ${localStorage.token}` }
+        }).then(function (response) {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response;
         })
             .then(res => res.json())
             .then(data => {
@@ -25,6 +30,9 @@ class FavoriteBusiness extends React.Component {
                     this.setState({ business: data })
                 } else
                     this.setState({ error: data.error.description })
+            })
+            .catch(res => {
+                this.setState({ error: res.message })
             })
     }
 

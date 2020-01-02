@@ -36,7 +36,6 @@ export class MapContainer extends React.Component {
         lng: favorite.longitude
       });
     });
-    console.log("Length", this.props.favorites.length);
     if (!!this.props.favorites.length) map.fitBounds(bounds);
     // map.panToBounds(bounds);
   };
@@ -106,7 +105,7 @@ export class MapContainer extends React.Component {
                     <Icon name="home" />
                     {this.state.selectedPlace.address}
                     <br />
-                    <Icon name=" phone" />
+                    <Icon name="phone" />
                     {this.state.selectedPlace.phone}
                   </Card.Description>
                 </Card.Content>

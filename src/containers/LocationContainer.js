@@ -41,6 +41,9 @@ class LocationContainer extends React.Component {
                     console.error(data.statusText);
                 }
             })
+            .catch(res => {
+                console.log(res);
+            })
     }
 
     handleFormChange = (e) => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Button, Card, Container, Loader, Message, Radio, Segment, Divider, Label } from 'semantic-ui-react'
+import { Header, Button, Card, Container, Loader, Message, Radio, Segment } from 'semantic-ui-react'
 import Business from '../components/Business'
 
 class LocationDetails extends React.Component {
@@ -21,12 +21,21 @@ class LocationDetails extends React.Component {
         fetch(`http://localhost:3000/api/v1/businesses?location_id=${this.props.selectedLocation.id}&sort=${value}`, {
             headers: { 'Authorization': `Bearer ${localStorage.token}` }
         })
+            .then(function (response) {
+                if (!response.ok) { //Internal Server error
+                    throw Error(response.statusText);
+                }
+                return response;
+            })
             .then(res => res.json())
             .then(data => {
                 if (!data.error) {
                     this.setState({ businesses: data.businesses })
-                } else
+                } else //Error from controller
                     this.setState({ error: data.error.description })
+            })
+            .catch(res => {
+                this.setState({ error: res.message })
             })
     }
 
@@ -42,11 +51,12 @@ class LocationDetails extends React.Component {
                 <Header inverted as="h2">{selectedLocation.name},{' '}{selectedLocation.address1},{' '} {selectedLocation.zip}</Header>
                 <Segment.Group horizontal>
                     <Segment>
+                        <Header as="h2">Actions</Header>
                         <Button onClick={handleShowAll}>Show All Locations</Button>
                         <Button onClick={this.props.handleShowAddForm}>Add a Location</Button>
                     </Segment>
                     <Segment>
-                        <span as="h2">Sort By: </span>
+                        <Header as="h2">Sort By: </Header>
                         <Radio
                             label='Best Match'
                             name='radioGroup'
@@ -61,6 +71,7 @@ class LocationDetails extends React.Component {
                             value='rating'
                             checked={this.state.value === 'rating'}
                             onChange={this.handleChange}
+                            size="large"
                             style={{ margin: "0 1em" }}
                         />
                         <Radio

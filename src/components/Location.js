@@ -22,7 +22,7 @@ class Location extends React.Component {
                 </Card.Content>
                 <Button.Group>
                     <Button icon='eye' content='View' onClick={(e) => handleViewClick(e, location)} />
-                    <Button icon='edit' content='Edit' onClick={(e) => handleEditClick(e, location)} />
+                    {/* <Button icon='edit' content='Edit' onClick={(e) => handleEditClick(e, location)} /> */}
                     <Button icon='delete' content='Delete' onClick={(e) => handleDeleteClick(e, location)} />
                 </Button.Group>
             </Card>
