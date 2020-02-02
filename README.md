@@ -4,6 +4,8 @@
 
 ---
 
+![FLELP](./src/images/Screen.png)
+
 ### Technologies, Libraries, Frameworks
 
 - React
@@ -23,3 +25,7 @@
 ---
 
 ### Models
+
+- users
+- locations
+- favorite_businesses
